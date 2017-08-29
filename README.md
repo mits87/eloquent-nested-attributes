@@ -4,7 +4,6 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 Nested attributes allow you to save attributes on associated records through the parent. By default nested attribute updating is turned off and you can enable it using the $nested attribute. When you enable nested attributes an attribute writer is defined on the model.
@@ -130,17 +129,13 @@ If you discover any security related issues, please email mits87@gmail.com inste
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/:vendor/nested-attributes.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/mits87/nested-attributes.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/:vendor/nested-attributes/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/:vendor/nested-attributes.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/:vendor/nested-attributes.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/:vendor/nested-attributes.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/mits87/nested-attributes/master.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/mits87/nested-attributes.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/:vendor/nested-attributes
-[link-travis]: https://travis-ci.org/:vendor/nested-attributes
-[link-scrutinizer]: https://scrutinizer-ci.com/g/:vendor/nested-attributes/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/:vendor/nested-attributes
-[link-downloads]: https://packagist.org/packages/:vendor/nested-attributes
+[link-packagist]: https://packagist.org/packages/mits87/nested-attributes
+[link-travis]: https://travis-ci.org/mits87/nested-attributes
+[link-downloads]: https://packagist.org/packages/mits87/nested-attributes
 [link-author]: https://github.com/mits87
 [link-contributors]: ../../contributors
