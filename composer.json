@@ -36,8 +36,7 @@
     },
     "scripts": {
         "test": [
-          "vendor/bin/phpunit --colors=always",
-          "vendor/bin/phpcs -p --standard=PSR2 --runtime-set --dry-run ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests"
+          "vendor/bin/phpunit --colors=always"
         ]
     },
     "config": {
