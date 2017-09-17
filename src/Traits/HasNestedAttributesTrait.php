@@ -73,14 +73,14 @@ trait HasNestedAttributesTrait
             }
 
             $relation = $this->$methodName();
-            
+
             if ($relation instanceof HasOne || $relation instanceof MorphOne) {
                 if (!$this->saveNestedAttributes($relation, $stack)) {
                     return false;
                 }
             } else if ($relation instanceof HasMany || $relation instanceof MorphMany) {
                 foreach ($stack as $params) {
-                    if (!$this->saveNestedAttributes($relation, $params)) {
+                    if (!$this->saveManyNestedAttributes($relation, $params)) {
                         return false;
                     }
                 }
@@ -94,7 +94,7 @@ trait HasNestedAttributesTrait
     }
 
     /**
-     * Save the nested relation attributes to the database.
+     * Save the hasOne nested relation attributes to the database.
      *
      * @param  Illuminate\Database\Eloquent\Relations  $relation
      * @param  array                                   $params
@@ -102,12 +102,25 @@ trait HasNestedAttributesTrait
      */
     protected function saveNestedAttributes($relation, array $params)
     {
-        if ($this->exists) {
-            if (isset($params['id'])) {
-                $model = $relation->findOrFail($params['id']);
-            } else {
-                $model = $relation->firstOrFail();
-            }
+        if ($this->exists && $model = $relation->first()) {
+            return $model->update($stack);
+        } else if ($relation->create($stack)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Save the hasMany nested relation attributes to the database.
+     *
+     * @param  Illuminate\Database\Eloquent\Relations  $relation
+     * @param  array                                   $params
+     * @return bool
+     */
+    protected function saveManyNestedAttributes($relation, array $params)
+    {
+        if (isset($params['id']) && $this->exists) {
+            $model = $relation->findOrFail($params['id']);
             return $model->update($params);
         } else if ($relation->create($params)) {
             return true;
