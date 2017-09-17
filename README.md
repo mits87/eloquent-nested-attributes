@@ -40,11 +40,13 @@ class Post extends Model
     protected $nested = ['option', 'comments'];
 
     public function option() {
-       return $this->hasOne('App\Option');
+        //it can be also morphOne
+        return $this->hasOne('App\Option');
     }
 
     public function comments() {
-       return $this->hasMany('App\Comment');
+        //it can be also morphMany
+        return $this->hasMany('App\Comment');
     }
 }
 ```
