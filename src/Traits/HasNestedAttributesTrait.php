@@ -20,6 +20,14 @@ trait HasNestedAttributesTrait
     protected $acceptNestedAttributesFor = [];
 
     /**
+     * Defined "destroy" key name
+     *
+     * @var string
+     */
+    protected $destroyNestedKey = '_destroy';
+
+
+    /**
      * Get accept nested attributes
      *
      * @return array
@@ -80,7 +88,7 @@ trait HasNestedAttributesTrait
                 }
             } else if ($relation instanceof HasMany || $relation instanceof MorphMany) {
                 foreach ($stack as $params) {
-                    if (!$this->saveManyNestedAttributes($relation, $params)) {
+                    if (!$this->saveManyNestedAttributes($this->$methodName(), $params)) {
                         return false;
                     }
                 }
@@ -103,6 +111,9 @@ trait HasNestedAttributesTrait
     protected function saveNestedAttributes($relation, array $params)
     {
         if ($this->exists && $model = $relation->first()) {
+            if ($this->allowDestroyNestedAttributes($params)) {
+                return $model->delete();
+            }
             return $model->update($stack);
         } else if ($relation->create($stack)) {
             return true;
@@ -121,10 +132,25 @@ trait HasNestedAttributesTrait
     {
         if (isset($params['id']) && $this->exists) {
             $model = $relation->findOrFail($params['id']);
+
+            if ($this->allowDestroyNestedAttributes($params)) {
+                return $model->delete();
+            }            
             return $model->update($params);
         } else if ($relation->create($params)) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Check can we delete nested data
+     *
+     * @param  array $params
+     * @return bool
+     */
+    protected function allowDestroyNestedAttributes(array $params)
+    {
+        return isset($params[$this->destroyNestedKey]) && (bool) $params[$this->destroyNestedKey] == true;
     }
 }

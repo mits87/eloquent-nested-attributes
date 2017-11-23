@@ -103,6 +103,26 @@ usage:
 ]);
 ```
 
+to delete nested row you should pass `_destroy` attribute:
+
+````
+\App\Post::findOrFail(1)->update([
+    'title' => 'Better text',
+
+    'option' => [
+        'info' => 'better info'
+    ],
+
+    'comments' => [
+        [
+            'id' => 2,
+            '_destroy' => true
+        ],
+    ]
+]);
+```
+
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
