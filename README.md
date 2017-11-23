@@ -105,7 +105,7 @@ usage:
 
 to delete nested row you should pass `_destroy` attribute:
 
-````
+```
 \App\Post::findOrFail(1)->update([
     'title' => 'Better text',
 
