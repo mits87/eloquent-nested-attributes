@@ -13,6 +13,19 @@ class HasNestedAttributesTraitTest extends TestCase
         // Mock the Model that uses the custom traits
         $this->model = Mockery::mock('ModelEloquentStub');
         $this->model->makePartial();
+
+        // Mock the Model without fillable array set
+        $this->modelWithoutFillable = Mockery::mock('ModelEloquentStubWithoutFillable');
+        $this->modelWithoutFillable->makePartial();
+
+        // Default payload for Model
+        $this->payload = [
+            'model_bar'  => ['text' => 'bar'],
+            'model_foos' => [
+                ['text' => 'foo1'],
+                ['text' => 'foo2'],
+            ]
+        ];
     }
 
     /**
@@ -28,55 +41,72 @@ class HasNestedAttributesTraitTest extends TestCase
      */
     public function testFillable()
     {
-        $payload = [
-            'title'      => 'foo',
-            'not_exists' => [],
-            'model_bar'  => ['text' => 'bar'],
-            'model_foos' => [
-                ['text' => 'foo1'],
-                ['text' => 'foo2'],
-            ]
-        ];
-
-        $this->model->fill($payload);
+        $this->model->fill(array_merge($this->payload, ['title' => 'foo', 'not_exists' => []]));
 
         $this->assertEquals(['title' => 'foo'], $this->model->getAttributes());
         $this->assertEquals([
             'model_bar'  => ['text' => 'bar'],
             'model_foos' => [
-                ['text' => 'foo1'], 
+                ['text' => 'foo1'],
                 ['text' => 'foo2']
             ]
         ], $this->model->getAcceptNestedAttributesFor());
     }
+
+    /**
+     * Test that a model with nested attributes can still save without fillable array.
+     */
+    public function testModelWithNestedAttributesCanSaveWithoutFillableArraySet()
+    {
+        $this->modelWithoutFillable->fill($this->payload);
+
+        $this->assertEquals([
+            'model_bar'  => ['text' => 'bar'],
+            'model_foos' => [
+                ['text' => 'foo1'],
+                ['text' => 'foo2']
+            ]
+        ], $this->modelWithoutFillable->getAcceptNestedAttributesFor());
+    }
 }
 
-class ModelEloquentStub extends Model {
+class ModelEloquentStubWithoutFillable extends Model
+{
     protected $table    = 'stubs';
-    protected $fillable = ['title'];
     protected $nested   = ['model_bar', 'model_foos' ];
-    
-    public function modelBar() {
+
+    public function modelBar()
+    {
         return $this->hasOne(ModelBarStub::class);
     }
 
-    public function modelFoos() {
+    public function modelFoos()
+    {
         return $this->hasOne(ModelFooStub::class);
     }
 }
 
-class ModelBarStub extends Model {
+class ModelEloquentStub extends ModelEloquentStubWithoutFillable
+{
+    protected $fillable = ['title'];
+}
+
+class ModelBarStub extends Model
+{
     protected $fillable = ['text'];
-    
-    public function parent() {
+
+    public function parent()
+    {
         return $this->belongsTo(ModelEloquentStub::class);
     }
 }
 
-class ModelFooStub extends Model {
+class ModelFooStub extends Model
+{
     protected $fillable = ['text'];
 
-    public function parent() {
+    public function parent()
+    {
         return $this->belongsTo(ModelEloquentStub::class);
     }
 }
