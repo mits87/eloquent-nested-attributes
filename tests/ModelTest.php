@@ -14,7 +14,7 @@ class ModelTest extends TestCase
     /**
      * Set Up and Prepare Tests.
      */
-    public function setUp()
+    public function setUp(): void
     {
         // Mock the Model that uses the custom traits
         $this->model = Mockery::mock('ModelStub');
@@ -24,7 +24,7 @@ class ModelTest extends TestCase
     /**
      * Tear Down and Clean Up Tests.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
     }
@@ -32,7 +32,7 @@ class ModelTest extends TestCase
     /**
      * Test that the Model uses the traits and in the right order.
      */
-    public function testModelUsesTraits()
+    public function testModelUsesTraits(): void
     {
         // Get the traits off the model
         $traits = function_exists('class_uses_recursive') ?
