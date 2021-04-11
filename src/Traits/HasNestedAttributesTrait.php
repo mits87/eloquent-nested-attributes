@@ -117,8 +117,8 @@ trait HasNestedAttributesTrait
                 return $model->delete();
             }
 
-            return $model->update($stack);
-        } elseif ($relation->create($stack)) {
+            return $model->update($params);
+        } elseif ($relation->create($params)) {
             return true;
         }
 
